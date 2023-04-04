@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:qr_reader_and_generator/view/qr_sanner_result_view.dart';
 
 class QRViewExample extends StatefulWidget {
   const QRViewExample({Key? key}) : super(key: key);
@@ -30,13 +31,18 @@ class _QRViewExampleState extends State<QRViewExample> {
     return Scaffold(
       body: Column(
         children: <Widget>[
-          Expanded(flex: 4, child: _buildQrView(context)),
+          Expanded(
+              flex: 4,
+              child: buildQrView(context)
+          ),
+          if(result != null)
+            changeRssDialog(context, result!.code),
         ],
       ),
     );
   }
 
-  Widget _buildQrView(BuildContext context) {
+  Widget buildQrView(BuildContext context) {
     var scanArea = (MediaQuery.of(context).size.width < 400 ||
             MediaQuery.of(context).size.height < 400)
         ? 250.0
@@ -143,3 +149,4 @@ class _QRViewExampleState extends State<QRViewExample> {
     super.dispose();
   }
 }
+

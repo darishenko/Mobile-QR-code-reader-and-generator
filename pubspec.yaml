@@ -47,6 +47,8 @@ dev_dependencies:
   screenshot: any
   share: any
 
+  url_launcher: ^6.1.10
+
   qr_code_scanner: ^1.0.1
 
   # The "flutter_lints" package below contains a set of recommended lints to

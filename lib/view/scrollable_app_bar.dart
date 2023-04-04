@@ -23,8 +23,8 @@ class ScrollableAppBar extends StatelessWidget {
   ];
 
   List<Widget> tabsContent = [
-    QrGenerator(),
     QRViewExample(),
+    QrGenerator(),
   ];
 
   ScrollableAppBar({super.key});
