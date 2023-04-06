@@ -48,6 +48,7 @@ dev_dependencies:
   share: any
 
   url_launcher: ^6.1.10
+  regexed_validator: ^2.0.0+1
 
   qr_code_scanner: ^1.0.1
 
