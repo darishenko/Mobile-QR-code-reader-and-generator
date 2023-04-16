@@ -1,12 +1,10 @@
-import 'dart:io';
-import 'dart:typed_data';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:qr_reader_and_generator/service/qr_code_database.dart';
 import 'package:screenshot/screenshot.dart';
-import 'package:share/share.dart';
-import 'package:path_provider/path_provider.dart';
+import '../service/qr_sharing.dart';
+import '../model/qr_code.dart';
 
 class QrGenerator extends StatefulWidget {
   QrGenerator({super.key});
@@ -65,32 +63,73 @@ class _QrGeneratorState extends State<QrGenerator> {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: mainColor,
-                            width: 2,
-                          ),
-                        ),
-                        child: Ink(
-                          decoration: const ShapeDecoration(
-                            color: Colors.white,
-                            shape: CircleBorder(),
-                          ),
-                          child: IconButton(
-                            icon: const Icon(
-                              Icons.ios_share,
-                              color: Colors.pink,
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 16.0, horizontal: 60),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: mainColor,
+                                width: 2,
+                              ),
                             ),
-                            onPressed: () {
-                              shareQrCode();
-                            },
+                            child: Ink(
+                              decoration: const ShapeDecoration(
+                                color: Colors.white,
+                                shape: CircleBorder(),
+                              ),
+                              child: IconButton(
+                                icon: const Icon(
+                                  Icons.ios_share,
+                                  color: Colors.pink,
+                                ),
+                                onPressed: () {
+                                  shareQrCode(screenshotController);
+                                },
+                              ),
+                            ),
                           ),
                         ),
-                      ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 16.0, bottom: 16.0, left: 70),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: mainColor,
+                                width: 2,
+                              ),
+                            ),
+                            child: Ink(
+                              decoration: const ShapeDecoration(
+                                color: Colors.white,
+                                shape: CircleBorder(),
+                              ),
+                              child: IconButton(
+                                icon: const Icon(
+                                  Icons.save,
+                                  color: Colors.pink,
+                                ),
+                                onPressed: () {
+                                  QrCodeDatabase.instance.addQrCode(QRCode(
+                                      id: null,
+                                      prioritise: false,
+                                      content: qrCodeTextController.text,
+                                      createdTime: DateTime.now()));
+
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content: Text('Qr code is saved!')));
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     Center(
                       child: QrCodeGeneratingInput(),
@@ -160,7 +199,9 @@ class _QrGeneratorState extends State<QrGenerator> {
                 ),
                 onPressed: () {
                   //#TODO change QR code image when the text is cleaned
-                  qrCodeTextController.text = " ";
+                  setState(() {
+                    qrCodeTextController.text = '';
+                  });
                 },
               ),
               prefixIcon: const Icon(
@@ -173,23 +214,5 @@ class _QrGeneratorState extends State<QrGenerator> {
         ),
       ),
     );
-  }
-
-  void shareQrCode() async {
-    final directory = (await getApplicationDocumentsDirectory()).path;
-    try {
-      final image = await screenshotController.capture();
-
-      if (image != null) {
-        final fileName = DateTime.now().microsecondsSinceEpoch.toString();
-        final imagePath = await File('$directory/$fileName.png').create();
-        if (imagePath != null) {
-          await imagePath.writeAsBytes(image);
-          Share.shareFiles([imagePath.path]);
-        }
-      }
-    } catch (error) {
-      print('Error --->> $error');
-    }
   }
 }

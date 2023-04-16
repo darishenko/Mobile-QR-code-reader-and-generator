@@ -36,7 +36,7 @@ class _QRViewExampleState extends State<QRViewExample> {
               child: buildQrView(context)
           ),
           if(result != null)
-            changeRssDialog(context, result!.code),
+            ReadQrCodeDialog(context, result!.code),
         ],
       ),
     );

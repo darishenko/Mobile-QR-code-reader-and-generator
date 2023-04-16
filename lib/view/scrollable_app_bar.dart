@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qr_reader_and_generator/view/qr_generator_view.dart';
 import 'package:qr_reader_and_generator/view/qr_reader_view.dart';
+import 'package:qr_reader_and_generator/view/saved_qr_code_list.dart';
 
 class ScrollableAppBar extends StatelessWidget {
   List<Tab> tabs = [
@@ -20,11 +21,20 @@ class ScrollableAppBar extends StatelessWidget {
         fontSize: 14,
       ),
     )),
+    const Tab(
+        child: Text(
+          "Saved QR code",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 14,
+          ),
+        )),
   ];
 
   List<Widget> tabsContent = [
     QRViewExample(),
     QrGenerator(),
+    SavedQrCodeList(),
   ];
 
   ScrollableAppBar({super.key});
@@ -37,9 +47,9 @@ class ScrollableAppBar extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.pink,
           bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(10),
+            preferredSize: const Size.fromHeight(0),
             child: TabBar(
-              indicatorColor: Colors.yellow,
+              indicatorColor: Colors.white,
               tabs: tabs,
             ),
           ),

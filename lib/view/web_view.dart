@@ -42,11 +42,11 @@ class _WebViewWidgetState extends State<WebViewWidget> {
         ),
         body: Center(
             child: WebView(
-              javascriptMode: JavascriptMode.unrestricted,
-              initialUrl: widget.url,
-              onWebViewCreated: (controller) {
-                this.controller = controller;
-              },
-            )));
+          javascriptMode: JavascriptMode.unrestricted,
+          initialUrl: widget.url,
+          onWebViewCreated: (controller) {
+            this.controller = controller;
+          },
+        )));
   }
 }
